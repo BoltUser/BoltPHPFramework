@@ -1,47 +1,65 @@
 <?php
 namespace Bolt\Core;
 
+use FastRoute;
+use Aura\Web\WebFactory;
 
 class BoltPHP
 {
 
     public function __construct()
     {
-
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+        $whoops->register();
     }
 
     public function run()
     {
-        $dispatcher = \FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r){
-            $r->addRoute('GET','/users','get_all_users_handler');
-            // {id} must be a number (\d+)
-            $r->addRoute('GET','/user/{id:\d+}','get_user_handler');
-            // The /{title} suffix is optional
-            $r->addRoute('GET','/articles/{id:\d+}[/{title}]','get_article_handler');
-        });
-
-        // Fetch method and URI from somewhere
-        $httpMethod = $_SERVER['REQUEST_METHOD'];
-        $uri = $_SERVER['REQUEST_URI'];
-
-        // Strip query string (?foo=bar) and decode URI
-        if(FALSE !== $pos = strpos($uri,'?')){
-            $uri = substr($uri,0,$pos);
+        $wf = new WebFactory(array('_ENV' => $_ENV,'_GET' => $_GET,'_POST' => $_POST,'_COOKIE' => $_COOKIE,'_SERVER' => $_SERVER));
+        $request = $wf->newRequest();
+        $response = $wf->newResponse();
+        foreach($response->headers->get() as $header){
+            header($header,FALSE);
         }
-        $uri = rawurldecode($uri);
+
+        $routeDefinitionCallback = function(\FastRoute\RouteCollector $r){
+            $routes = include(__DIR__ . '/../config/Routes.php');
+            foreach($routes as $route){
+                $r->addRoute($route[0],$route[1],$route[2]);
+            }
+        };
+
+        $dispatcher = \FastRoute\simpleDispatcher($routeDefinitionCallback);
+        $routeInfo = $dispatcher->dispatch($request->method->get(),$request->url->get());
 
         $routeInfo = $dispatcher->dispatch($httpMethod,$uri);
         switch($routeInfo[0]){
             case FastRoute\Dispatcher::NOT_FOUND:
-                // ... 404 Not Found
+                $response->content->set('404 - Page not found');
+                $response->status->set('404','Not Found','1.1');
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = $routeInfo[1];
-                // ... 405 Method Not Allowed
+                $response->content->set('405 - Method not allowed');
+                $response->status->set('405','Not Allowed','1.1');
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
+
+                //call_user_func_array(array(new $class, $method), $vars);
+                $className = $routeInfo[1][0];
+                $method = $routeInfo[1][1];
+                $vars = $routeInfo[2];
+
+                var_dump($className);
+                var_dump($method);
+                var_dump($vars);
+
+                $class = new $className($request,$response);
+                $class->beforeRun();
+                $class->$method($vars);
+                $class->afterRun();
                 // ... call $handler with $vars
                 break;
         }
