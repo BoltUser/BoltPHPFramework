@@ -12,7 +12,11 @@
   "require": {
     "php": ">=5.3.0",
     "raveren/kint": ">=2.0-alpha1",
-    "guzzlehttp/guzzle": "~6.0"
+    "guzzlehttp/guzzle": "~6.0",
+    "mrrio/shellwrap": ">=0.4.1",
+    "jasongrimes/paginator": ">=1.0.2",
+    "league/csv": "^9.0",
+    "nikic/fast-route": "^1.2"
   },
   "autoload":{
     "psr-4":{
