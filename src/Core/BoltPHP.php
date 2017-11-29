@@ -16,6 +16,9 @@ class BoltPHP
 
     public function run()
     {
+        if(!defined("BASE_PATH"))
+            throw new \Exception('Please Define a BASE_PATH constant in your index file on docroot');
+
         $wf = new WebFactory(array('_ENV' => $_ENV,'_GET' => $_GET,'_POST' => $_POST,'_COOKIE' => $_COOKIE,'_SERVER' => $_SERVER));
         $request = $wf->newRequest();
         $response = $wf->newResponse();
@@ -24,7 +27,14 @@ class BoltPHP
         }
 
         $routeDefinitionCallback = function(\FastRoute\RouteCollector $r){
-            $routes = include(__DIR__ . '/../config/Routes.php');
+            $stack = array_reverse(debug_backtrace());
+            var_dump($stack[0]['file']);
+            $app_path = dirname(dirname($stack[0]['file']));
+            //var_dump(BASE_PATH . '/../config/Routes.php');
+
+            die();
+            $routes = include_once(__DIR__ . '/../config/Routes.php');
+
             foreach($routes as $route){
                 $r->addRoute($route[0],$route[1],$route[2]);
             }

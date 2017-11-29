@@ -18,7 +18,8 @@
     "league/csv": "^9.0",
     "nikic/fast-route": "^1.2",
     "aura/web": "^2.1",
-    "filp/whoops": "~2.1"
+    "filp/whoops": "~2.1",
+    "propel/propel": "~2.0@dev"
   },
   "autoload":{
     "psr-4":{
