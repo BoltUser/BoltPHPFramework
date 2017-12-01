@@ -3,7 +3,7 @@
 namespace Bolt\Route;
 
 
-class Manager
+class Reader
 {
 
 }

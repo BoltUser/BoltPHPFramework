@@ -25,52 +25,39 @@ class BoltPHP
         foreach($response->headers->get() as $header){
             header($header,FALSE);
         }
-
         $routeDefinitionCallback = function(\FastRoute\RouteCollector $r){
             $stack = array_reverse(debug_backtrace());
-            var_dump($stack[0]['file']);
             $app_path = dirname(dirname($stack[0]['file']));
-            //var_dump(BASE_PATH . '/../config/Routes.php');
-
-            die();
-            $routes = include_once(__DIR__ . '/../config/Routes.php');
-
+            $routes = include_once($app_path . '/routes/routes.php');
             foreach($routes as $route){
                 $r->addRoute($route[0],$route[1],$route[2]);
             }
         };
-
         $dispatcher = \FastRoute\simpleDispatcher($routeDefinitionCallback);
-        $routeInfo = $dispatcher->dispatch($request->method->get(),$request->url->get());
-
-        $routeInfo = $dispatcher->dispatch($httpMethod,$uri);
+        $routeInfo = $dispatcher->dispatch($request->method->get(),$request->url->get(PHP_URL_PATH));
         switch($routeInfo[0]){
             case FastRoute\Dispatcher::NOT_FOUND:
                 $response->content->set('404 - Page not found');
                 $response->status->set('404','Not Found','1.1');
+                echo "Not Found";
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 $response->content->set('405 - Method not allowed');
                 $response->status->set('405','Not Allowed','1.1');
+                echo "Not Allowed";
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
 
-                //call_user_func_array(array(new $class, $method), $vars);
                 $className = $routeInfo[1][0];
                 $method = $routeInfo[1][1];
                 $vars = $routeInfo[2];
-
-                var_dump($className);
-                var_dump($method);
-                var_dump($vars);
 
                 $class = new $className($request,$response);
                 $class->beforeRun();
                 $class->$method($vars);
                 $class->afterRun();
-                // ... call $handler with $vars
                 break;
         }
     }
