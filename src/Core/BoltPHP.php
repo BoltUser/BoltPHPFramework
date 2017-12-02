@@ -1,6 +1,8 @@
 <?php
 namespace Bolt\Core;
 
+use Bolt\Config\Cache as CacheConfig;
+use Bolt\Route\Reader as RouteReader;
 use FastRoute;
 use Aura\Web\WebFactory;
 
@@ -26,25 +28,25 @@ class BoltPHP
             header($header,FALSE);
         }
         $routeDefinitionCallback = function(\FastRoute\RouteCollector $r){
-            $stack = array_reverse(debug_backtrace());
-            $app_path = dirname(dirname($stack[0]['file']));
-            $routes = include_once($app_path . '/routes/routes.php');
+            $routes = RouteReader::getRoutes();
             foreach($routes as $route){
                 $r->addRoute($route[0],$route[1],$route[2]);
             }
         };
+
+
         $dispatcher = \FastRoute\simpleDispatcher($routeDefinitionCallback);
         $routeInfo = $dispatcher->dispatch($request->method->get(),$request->url->get(PHP_URL_PATH));
         switch($routeInfo[0]){
             case FastRoute\Dispatcher::NOT_FOUND:
                 $response->content->set('404 - Page not found');
                 $response->status->set('404','Not Found','1.1');
-                echo "Not Found";
+                echo $response->content->get();
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 $response->content->set('405 - Method not allowed');
                 $response->status->set('405','Not Allowed','1.1');
-                echo "Not Allowed";
+                echo $response->content->get();
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
