@@ -304,7 +304,7 @@ class Network
             $attr = " $attr";
         }
 
-        return sprintf('<img src="https://www.google.com/s2/favicons?domain=%s"%s/>',urlencode($url),$attr);
+        return sprintf('<img src="https://www.google.com/s2/favicons?domain=%s"/>', urlencode($url), $attr);
     }
 
     /**
