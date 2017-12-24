@@ -12,6 +12,7 @@ class BoltPHP
     public function __construct()
     {
 
+
     }
 
     public function run()
