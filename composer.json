@@ -20,7 +20,8 @@
     "aura/web": "^2.1",
     "filp/whoops": "~2.1",
     "propel/propel": ">=2.0",
-    "monolog/monolog": "~1.3"
+    "monolog/monolog": "~1.3",
+    "gabordemooij/redbean": "dev-master"
   },
   "autoload":{
     "psr-4":{
