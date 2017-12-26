@@ -14,13 +14,12 @@ class View
      *
      * @return void
      */
-    public static function render($view, $args = [])
+    public static function render($viewName, $args = [])
     {
         extract($args, EXTR_SKIP);
         $stack = array_reverse(debug_backtrace());
         $app_path = dirname(dirname($stack[0]['file']));
-        $file = $app_path . "/resources/views/$view";
-        var_dump($file);
+        $file = $app_path . "/resources/views/$viewName";
         if (is_readable($file)) {
             require $file;
         } else {
@@ -36,7 +35,7 @@ class View
      *
      * @return void
      */
-    public static function renderTemplate($template, $args = [])
+    public static function renderTemplate($viewName, $args = [])
     {
         $stack = array_reverse(debug_backtrace());
         $app_path = dirname(dirname($stack[0]['file']));
@@ -45,7 +44,7 @@ class View
             $loader = new \Twig_Loader_Filesystem($app_path . "/resources/views");
             $twig = new \Twig_Environment($loader);
         }
-        echo $twig->render($template, $args);
+        echo $twig->render($viewName, $args);
     }
 
 }
