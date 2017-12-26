@@ -511,21 +511,17 @@ class Str
      * Checks if the $haystack ends with the text in the $needle. Case sensitive.
      *
      * @param string $haystack
-     * @param string $needle
-     * @param bool   $caseSensitive
-     *
+     * @param string $needle *
      * @return bool
      */
-    public static function endWith($haystack,$needle,$caseSensitive = FALSE): bool
+    public static function endWith($haystack, $needle): bool
     {
-        if($caseSensitive){
-            return $needle === '' || self::sub($haystack,-self::len($needle)) === $needle;
-        }
+        return strrpos($haystack, $needle) === strlen($haystack) - strlen($needle);
+    }
 
-        $haystack = self::low($haystack);
-        $needle = self::low($needle);
-
-        return $needle === '' || self::sub($haystack,-self::len($needle)) === $needle;
+    public static function endWith2($haystack, $needle): bool
+    {
+        return substr($haystack, strlen($needle) * -1) == $needle;
     }
 
     /**
