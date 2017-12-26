@@ -12,7 +12,6 @@ class Str
 
     /**
      * Strip all whitespaces from the given string.
-     *
      * @param  string $string The string to strip
      *
      * @return string
@@ -155,9 +154,7 @@ class Str
 
     /**
      * Get unique string
-     *
      * @param  string $prefix
-     *
      * @return string
      */
     public static function unique($prefix = 'unique'): string
@@ -175,10 +172,8 @@ class Str
 
     /**
      * Generate readable random string
-     *
      * @param int  $length
      * @param bool $isReadable
-     *
      * @return string
      */
     public static function random($length = 10,$isReadable = TRUE): string
@@ -208,10 +203,8 @@ class Str
 
     /**
      * Pads a given string with zeroes on the left.
-     *
      * @param  int $number The number to pad
      * @param  int $length The total length of the desired string
-     *
      * @return string
      */
     public static function zeroPad($number,$length): string
@@ -519,6 +512,13 @@ class Str
         return strrpos($haystack, $needle) === strlen($haystack) - strlen($needle);
     }
 
+    /**
+     * Checks if the $haystack ends with the text in the $needle. Case sensitive.
+     *
+     * @param string $haystack
+     * @param string $needle *
+     * @return bool
+     */
     public static function endWith2($haystack, $needle): bool
     {
         return substr($haystack, strlen($needle) * -1) == $needle;
