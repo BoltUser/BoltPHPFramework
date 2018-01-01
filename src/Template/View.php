@@ -19,7 +19,7 @@ class View
         extract($args, EXTR_SKIP);
         $stack = array_reverse(debug_backtrace());
         $app_path = dirname(dirname($stack[0]['file']));
-        $file = $app_path . "/resources/views/$viewName";
+        $file = $app_path . "/resources/views/$viewName.php";
         if (is_readable($file)) {
             require $file;
         } else {

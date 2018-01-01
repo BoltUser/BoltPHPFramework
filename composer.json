@@ -20,6 +20,7 @@
     "twig/twig": ">=2.0",
     "phpFastCache/phpFastCache": ">=6.0.8",
     "aura/web": ">=2.1",
+    "aura/session":">=2.1.0",
     "filp/whoops": ">=2.1",
     "propel/propel": ">=2.0",
     "monolog/monolog": ">=1.3",

@@ -33,7 +33,6 @@ class BoltPHP
             }
         };
 
-
         $dispatcher = \FastRoute\simpleDispatcher($routeDefinitionCallback);
         $routeInfo = $dispatcher->dispatch($request->method->get(),$request->url->get(PHP_URL_PATH));
         switch($routeInfo[0]){
@@ -49,7 +48,6 @@ class BoltPHP
                 break;
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
-                $vars = $routeInfo[2];
 
                 $className = $routeInfo[1][0];
                 $method = $routeInfo[1][1];
@@ -136,6 +134,11 @@ class BoltPHP
         if(!preg_match('/[\x80-\xff]/',$string)){
             return $string;
         }
+    }
+
+    public static function redirect($location){
+        header("Location: $location");
+        die();
     }
 
     /**
