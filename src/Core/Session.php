@@ -13,17 +13,18 @@ class Session
 {
     private $session;
     private $segment;
+    public $segmentName;
 
-    public function __construct($cookie=FALSE)
+    public function __construct($cookie = FALSE, $segmentName = 'session')
     {
         $sessionFactory = new SessionFactory();
-
+        $this->segmentName = $segmentName;
         if($cookie)
             $this->session = $sessionFactory->newInstance($_COOKIE);
         else
             $this->session = $sessionFactory->newInstance($_SESSION);
 
-        $this->setSegment('sitename');
+        $this->setSegment($this->segmentName);
     }
 
     public function setSegment($segmentName):void

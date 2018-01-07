@@ -17,6 +17,7 @@ class BoltPHP
 
     public function run()
     {
+        $session = new Session();
         if(!defined("BASE_PATH"))
             throw new \Exception('Please Define a BASE_PATH constant in your index file on docroot');
 
@@ -53,7 +54,7 @@ class BoltPHP
                 $method = $routeInfo[1][1];
                 $vars = $routeInfo[2];
 
-                $class = new $className($request,$response);
+                $class = new $className($request, $response, $session);
                 $class->beforeRun();
                 $class->$method($vars);
                 $class->afterRun();
@@ -109,7 +110,7 @@ class BoltPHP
     }
 
     /**
-     * Strip all witespaces from the given string.
+     * Strip all whitespaces from the given string.
      *
      * @param  string $string The string to strip
      *

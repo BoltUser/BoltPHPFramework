@@ -8,7 +8,7 @@ use Aura\Web\Response;
 class BoltController
 {
 
-    public function __construct(Request $request,Response $response, Session)
+    public function __construct(Request $request, Response $response, Session $session)
     {
         $this->request = $request;
         $this->response = $response;
