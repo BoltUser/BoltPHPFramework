@@ -4,6 +4,7 @@ namespace Bolt\Controller;
 
 use Aura\Web\Request;
 use Aura\Web\Response;
+use Bolt\Core\Session;
 
 class BoltController
 {
@@ -12,6 +13,7 @@ class BoltController
     {
         $this->request = $request;
         $this->response = $response;
+        $this->session = $session;
     }
 
     public function beforeRun()

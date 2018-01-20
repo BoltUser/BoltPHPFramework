@@ -17,7 +17,7 @@ class BoltPHP
 
     public function run()
     {
-        $session = new Session();
+        $this->session = new Session();
         if(!defined("BASE_PATH"))
             throw new \Exception('Please Define a BASE_PATH constant in your index file on docroot');
 
@@ -54,7 +54,7 @@ class BoltPHP
                 $method = $routeInfo[1][1];
                 $vars = $routeInfo[2];
 
-                $class = new $className($request, $response, $session);
+                $class = new $className($request, $response, $this->session);
                 $class->beforeRun();
                 $class->$method($vars);
                 $class->afterRun();
