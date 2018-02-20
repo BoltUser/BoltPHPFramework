@@ -17,6 +17,7 @@ class Session
 
     public function __construct($cookie = FALSE, $segmentName = 'session')
     {
+        session_start();
         $sessionFactory = new SessionFactory();
         $this->segmentName = $segmentName;
         if($cookie)
