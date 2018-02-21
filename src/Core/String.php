@@ -834,4 +834,180 @@ class Str
 
         return $queries;
     }
+
+    /**
+     * Converts all accent characters to ASCII characters.
+     * If there are no accent characters, then the string given is just
+     * returned.
+     *
+     * @param  string $string Text that might have accent characters
+     *
+     * @return string Filtered  string with replaced "nice" characters
+     */
+    public static function removeAccents($string)
+    {
+        if (!preg_match('/[\x80-\xff]/', $string)) {
+            return $string;
+        }
+    }
+
+    /**
+     * Check if a string contains another string. This version is case
+     * insensitive.
+     *
+     * @param  string $haystack
+     * @param  string $needle
+     *
+     * @return boolean
+     */
+    public static function containsInsensitive($haystack, $needle)
+    {
+        return self::contains($haystack, $needle, TRUE);
+    }
+
+    /**
+     * Check if a string contains another string.
+     *
+     * @param  string $haystack
+     * @param  string $needle
+     *
+     * @return boolean
+     */
+    public static function contains($haystack, $needle, $caseInsentive = FALSE)
+    {
+        if ($caseInsentive)
+            return strpos($haystack, $needle) !== FALSE; else
+            return stripos($haystack, $needle) !== FALSE;
+    }
+
+
+    /**
+     * Sanitize a string by performing the following operation :
+     * - Remove accents
+     * - Lower the string
+     * - Remove punctuation characters
+     * - Strip whitespaces
+     *
+     * @param  string $string the string to sanitize
+     *
+     * @return string
+     */
+    public static function sanitizeString($string)
+    {
+        $string = self::removeAccents($string);
+        $string = strtolower($string);
+        $string = preg_replace('/[^a-zA-Z 0-9]+/', '', $string);
+        $string = self::stripSpace($string);
+        return $string;
+    }
+
+    /**
+     * Simple Encode string.
+     *
+     * @param string $string String you would like to encode
+     * @param string $passkey salt for encoding
+     *
+     * @return string
+     */
+    public static function simpleEncode($string, $passkey = NULL)
+    {
+        $key = $passkey;
+        if (!isset($passkey) || empty($passkey)) {
+            $key = self::generateServerSpecificHash();
+        }
+
+        $result = '';
+        for ($i = 0; $i < strlen($string); $i++) {
+            $char = substr($string, $i, 1);
+            $keychar = substr($key, ($i % strlen($key)) - 1, 1);
+            $char = chr(ord($char) + ord($keychar));
+            $result .= $char;
+        }
+
+        return base64_encode($result);
+    }
+
+    /**
+     * Convert Array to string.
+     *
+     * @param array $array array to convert to string
+     * @param string $delimiter
+     *
+     * @throws \Exception
+     * @return string <key1>="value1" <key2>="value2"
+     */
+    public static function arrayToString(array $array = [], $delimiter = ' ')
+    {
+        $pairs = [];
+        foreach ($array as $key => $value) {
+            $pairs[] = "$key=\"$value\"";
+        }
+
+        return implode($delimiter, $pairs);
+    }
+
+    /**
+     * Simple Decode string.
+     *
+     * @param string $string String encoded via Recipe::simpleEncode()
+     * @param string $passkey salt for encoding
+     *
+     * @return string
+     */
+    public static function simpleDecode($string, $passkey = NULL)
+    {
+        $key = $passkey;
+        if (!isset($passkey) || empty($passkey)) {
+            $key = self::generateServerSpecificHash();
+        }
+
+        $result = '';
+        $string = base64_decode($string);
+        for ($i = 0; $i < strlen($string); $i++) {
+            $char = substr($string, $i, 1);
+            $keychar = substr($key, ($i % strlen($key)) - 1, 1);
+            $char = chr(ord($char) - ord($keychar));
+            $result .= $char;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Truncate String (shorten) with or without ellipsis.
+     *
+     * @param string $string String to truncate
+     * @param int $maxLength Maximum length of string
+     * @param bool $addEllipsis if True, "..." is added in the end of the string, default true
+     * @param bool $wordsafe if True, Words will not be cut in the middle
+     *
+     * @return string Shortened Text
+     */
+    public static function shortenString($string, $maxLength, $addEllipsis = TRUE, $wordsafe = FALSE)
+    {
+        $ellipsis = '';
+        $maxLength = max($maxLength, 0);
+
+        if (mb_strlen($string) <= $maxLength) {
+            return $string;
+        }
+
+        if ($addEllipsis) {
+            $ellipsis = mb_substr('...', 0, $maxLength);
+            $maxLength -= mb_strlen($ellipsis);
+            $maxLength = max($maxLength, 0);
+        }
+
+        $string = mb_substr($string, 0, $maxLength);
+
+        if ($wordsafe) {
+            $string = preg_replace('/\s+?(\S+)?$/', '', mb_substr($string, 0, $maxLength));
+        }
+
+        if ($addEllipsis) {
+            $string .= $ellipsis;
+        }
+
+        return $string;
+    }
 }
