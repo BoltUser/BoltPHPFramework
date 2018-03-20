@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=7.0.0",
     "kint-php/kint": ">=2.2",
     "guzzlehttp/guzzle": ">=6.0",
     "mrrio/shellwrap": ">=0.4.1",
