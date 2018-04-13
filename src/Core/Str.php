@@ -85,6 +85,68 @@ class Str
         return $string;
     }
 
+    public static function getDomain($sEmail){
+        $aDomain = explode('@',$sEmail);
+        return $aDomain[1];
+    }
+
+    public static function getEmailAccount($sEmail){
+        $aDomain = explode('@',$sEmail);
+        return $aDomain[0];
+    }
+
+    public static function sanitizeEmail($email){
+        $email = str_replace(' ','',$email);
+        $email = str_replace('.@','@',$email);
+        $email = str_replace('.@','@',$email);
+        $email = str_replace('.@','@',$email);
+        $email = str_replace('@.','@',$email);
+        $email = str_replace('@.','@',$email);
+        $email = str_replace('@.','@',$email);
+        $email = str_replace('@@','@',$email);
+        $email = str_replace('-@-@','@',$email);
+        $email = str_replace('^','',$email);
+        $email = str_replace(')','',$email);
+        $email = str_replace('(','',$email);
+        $email = str_replace('...','.',$email);
+        $email = str_replace('..','.',$email);
+        $email = str_replace('[','',$email);
+        $email = str_replace('{','',$email);
+        $email = str_replace('}','',$email);
+        $email = str_replace(']','',$email);
+        $email = str_replace('<','',$email);
+        $email = str_replace('>','',$email);
+        $email = str_replace('*','',$email);
+        $email = str_replace('�','',$email);
+        $email = str_replace('?','',$email);
+        $email = str_replace(':','',$email);
+
+        return $email;
+    }
+
+    public static function getExt($sDomain){
+        $aExt = explode('.',$sDomain);
+        $aExt = array_reverse($aExt);
+        return $aExt[0];
+    }
+
+    public static function startsWithBis($string, $findme){
+        $length = strlen($findme);
+        return (substr($string, 0, $length) === $findme);
+    }
+
+    public static function endsWithBis($string, $findme){
+        $length = strlen($findme);
+        return $length === 0 || (substr($string, -$length) === $findme);
+    }
+
+    public static function isEmailValid($sEmail){
+        if (filter_var($sEmail, FILTER_VALIDATE_EMAIL)) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     /**
      * Make a string lowercase
      *

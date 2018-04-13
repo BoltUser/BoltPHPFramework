@@ -6,4 +6,5 @@ namespace Bolt\Core;
 class Collection
 {
 
+
 }

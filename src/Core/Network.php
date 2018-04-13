@@ -166,7 +166,8 @@ class Network
             CURLOPT_FOLLOWLOCATION => 1,
             CURLOPT_HEADER => 1,
             CURLOPT_NOBODY => 1,
-            CURLOPT_RETURNTRANSFER => 1
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_USERAGENT,'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'
         ));
 
         // fetch the response and info
@@ -315,6 +316,10 @@ class Network
         $text = (int)$nodeAttributes['TEXT'];
 
         return $text;
+    }
+
+    public static function isMxRecordPresent($sDomain){
+      return getmxrr($sDomain,$aTmpRecords);
     }
 
     /**
