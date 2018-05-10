@@ -191,6 +191,11 @@ class Utility
         return $days_in_month[$month - 1];
     }
 
+    public static function formatNumber($number, $decimal = 0)
+    {
+        return number_format($number, $decimal, ',', '.');
+    }
+
     /**
      * Sanitize FileName from special chart.
      * @method sanitizeFileName
