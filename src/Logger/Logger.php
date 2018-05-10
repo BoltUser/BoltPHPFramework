@@ -72,7 +72,7 @@ class Logger
 
     /**
      * Set the service container instance.
-     *
+     * @param Container $container
      */
     public static function setContainer(Container $container)
     {
@@ -95,8 +95,8 @@ class Logger
      * logging message will be discarded without any further action
      *
      * @param string $message The message that will be logged.
+     * @param string $logName
      * @param int $level The logging level.
-     *
      */
     public static function log($message, $logName = 'log', $level = self::LOG_DEBUG)
     {
