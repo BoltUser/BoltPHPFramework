@@ -98,7 +98,7 @@ class Logger
      * @param string $logName
      * @param int $level The logging level.
      */
-    public static function log($message, $logName = 'log', $level = self::LOG_DEBUG)
+    public static function log($message, $logName = 'log', $level = self::LOG_INFO)
     {
         $logger = self::$container->getLogger($logName);
 
