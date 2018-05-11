@@ -29,12 +29,12 @@ class Session
         $this->setSegment($this->segmentName);
     }
 
-    public function setSegment($segmentName):void
+    public function setSegment($segmentName)
     {
         $this->segment = $this->session->getSegment($segmentName);
     }
 
-    public function set($key,$value):void
+    public function set($key, $value)
     {
         $this->segment->set($key,$value);
     }
@@ -44,7 +44,7 @@ class Session
         $this->segment->get($key);
     }
 
-    public function setFlash($key,$value):void
+    public function setFlash($key, $value)
     {
         $this->segment->setFlash($key, $value);
     }
@@ -54,27 +54,27 @@ class Session
         return $this->segment->getFlash($key); // 'Hello world!'
     }
 
-    public function regenerateId():void
+    public function regenerateId()
     {
         $this->session->regenerateId();
     }
 
-    public function setLifetime($lifetime='1209600'):void
+    public function setLifetime($lifetime = '1209600')
     {
         $this->session->setCookieParams(array('lifetime' => $lifetime));
     }
 
-    public function clear():void
+    public function clear()
     {
         $this->session->clear();
     }
 
-    public function commit():void
+    public function commit()
     {
         $this->session->commit();
     }
 
-    public function destroy():void
+    public function destroy()
     {
         $this->session->destroy();
     }
