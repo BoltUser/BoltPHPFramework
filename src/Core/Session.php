@@ -41,7 +41,7 @@ class Session
 
     public function get($key)
     {
-        $this->segment->get($key);
+        return $this->segment->get($key);
     }
 
     public function setFlash($key, $value)
