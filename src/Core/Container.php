@@ -15,6 +15,7 @@ class Container
     /**
      * Get a logger instance
      *
+     * @param string $name
      * @return LoggerInterface
      */
     public function getLogger($name = 'defaultLogger')

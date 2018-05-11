@@ -39,7 +39,7 @@ class Session
         $this->segment->set($key,$value);
     }
 
-    public function get($key):mixed
+    public function get($key)
     {
         $this->segment->get($key);
     }
@@ -49,7 +49,7 @@ class Session
         $this->segment->setFlash($key, $value);
     }
 
-    public function getFlash($key):mixed
+    public function getFlash($key)
     {
         return $this->segment->getFlash($key); // 'Hello world!'
     }
