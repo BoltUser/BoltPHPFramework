@@ -18,7 +18,6 @@
     "league/csv": ">=9.0",
     "nikic/fast-route": ">=1.2",
     "twig/twig": ">=2.0",
-    "phpFastCache/phpFastCache": ">=6.0.8",
     "aura/web": ">=2.1",
     "aura/session":">=2.1.0",
     "filp/whoops": ">=2.1",
