@@ -21,7 +21,6 @@ class BoltPHP
 
     public function run()
     {
-        $this->session = new Session();
         if (!defined("BASE_PATH"))
             throw new \Exception('Please Define a BASE_PATH constant in your index file on docroot');
 
