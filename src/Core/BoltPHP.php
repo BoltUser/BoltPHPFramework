@@ -57,7 +57,7 @@ class BoltPHP
                 $method = $routeInfo[1][1];
                 $vars = $routeInfo[2];
 
-                $class = new $className($request, $response, $this->session);
+                $class = new $className($request, $response);
                 $class->beforeRun();
                 $class->$method($vars);
                 $class->afterRun();
